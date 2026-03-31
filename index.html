@@ -719,6 +719,193 @@ section.show { opacity: 1; transform: translateY(0); }
   width: 100%; border: none; overflow: hidden;
 }
 
+/* ─── BGM 버튼 ─── */
+#bgmBtn {
+  position: fixed;
+  bottom: 28px; right: 20px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(42,36,32,0.75);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  z-index: 8000;
+  transition: all 0.3s;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+#bgmBtn:hover { background: var(--gold); border-color: var(--gold); }
+#bgmBtn.playing { animation: noteSpin 4s linear infinite; }
+@keyframes noteSpin {
+  0%   { transform: rotate(0deg) scale(1); }
+  50%  { transform: rotate(180deg) scale(1.05); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+/* ─── 라이트박스 ─── */
+#lightbox {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.92);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 7000;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+#lightbox.open { opacity: 1; pointer-events: all; }
+#lightbox img {
+  max-width: 95vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 3px;
+  transform: scale(0.95);
+  transition: transform 0.3s;
+}
+#lightbox.open img { transform: scale(1); }
+#lightboxClose {
+  position: absolute; top: 20px; right: 24px;
+  color: rgba(255,255,255,0.7);
+  font-size: 28px;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s;
+}
+#lightboxClose:hover { color: #fff; }
+#lightboxPrev, #lightboxNext {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  color: rgba(255,255,255,0.6);
+  font-size: 32px;
+  cursor: pointer;
+  padding: 12px;
+  transition: color 0.2s;
+  user-select: none;
+}
+#lightboxPrev { left: 8px; }
+#lightboxNext { right: 8px; }
+#lightboxPrev:hover, #lightboxNext:hover { color: #fff; }
+#lightboxCounter {
+  position: absolute; bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Gowun Batang', serif;
+  font-size: 12px; letter-spacing: 3px;
+  color: rgba(255,255,255,0.5);
+}
+.gallery-img { cursor: pointer; transition: opacity 0.2s; }
+.gallery-img:hover { opacity: 0.85; }
+
+/* ─── 카카오 공유 버튼 ─── */
+#share-section { background: var(--warm-white); text-align: center; padding: 60px 24px; }
+.share-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 28px;
+  background: #FEE500;
+  color: #3C1E1E;
+  border: none;
+  border-radius: 2px;
+  font-family: 'Gowun Batang', serif;
+  font-size: 14px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 10px rgba(254,229,0,0.3);
+}
+.share-btn:hover { background: #f5d800; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(254,229,0,0.4); }
+.share-btn svg { width: 20px; height: 20px; }
+
+/* ─── 방명록 ─── */
+#guestbook-section { background: var(--cream); text-align: center; }
+.guestbook-form {
+  max-width: 480px;
+  margin: 0 auto 32px;
+  text-align: left;
+}
+.gb-input-wrap { margin-bottom: 12px; }
+.gb-input-wrap label {
+  display: block;
+  font-size: 11px; letter-spacing: 2px;
+  color: var(--gold);
+  font-family: 'Gowun Batang', serif;
+  margin-bottom: 6px;
+}
+.gb-input {
+  width: 100%;
+  padding: 12px 14px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-family: 'Gowun Batang', serif;
+  font-size: 14px;
+  color: var(--dark);
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+.gb-input:focus { border-color: var(--gold); }
+.gb-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-family: 'Gowun Batang', serif;
+  font-size: 14px;
+  color: var(--dark);
+  outline: none;
+  resize: none;
+  height: 100px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+.gb-textarea:focus { border-color: var(--gold); }
+.gb-submit {
+  width: 100%;
+  padding: 13px;
+  background: var(--dark);
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  font-family: 'Gowun Batang', serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 4px;
+}
+.gb-submit:hover { background: var(--gold); }
+.gb-list {
+  max-width: 480px;
+  margin: 0 auto;
+  text-align: left;
+}
+.gb-item {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+  animation: fadeUp 0.4s ease;
+}
+.gb-item-name {
+  font-family: 'Gowun Batang', serif;
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.gb-item-msg {
+  font-size: 14px;
+  color: var(--dark);
+  line-height: 1.8;
+}
+.gb-item-date {
+  font-size: 11px;
+  color: var(--soft);
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
 /* ─── 토스트 ─── */
 #toast {
   position: fixed; bottom: 40px; left: 50%;
@@ -911,27 +1098,32 @@ section.show { opacity: 1; transform: translateY(0); }
   <div class="gallery-grid">
     <div class="full-width">
       <img src="photo1.jpg" alt="" class="gallery-img wide" loading="lazy"
+           onclick="openLightbox(0)"
            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
            style="aspect-ratio:16/9">
       <div class="gallery-img-placeholder" style="aspect-ratio:16/9; display:none">📷</div>
     </div>
     <div>
       <img src="photo2.jpg" alt="" class="gallery-img" loading="lazy"
+           onclick="openLightbox(1)"
            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
       <div class="gallery-img-placeholder" style="display:none">📷</div>
     </div>
     <div>
       <img src="photo3.jpg" alt="" class="gallery-img" loading="lazy"
+           onclick="openLightbox(2)"
            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
       <div class="gallery-img-placeholder" style="display:none">📷</div>
     </div>
     <div>
       <img src="photo4.jpg" alt="" class="gallery-img" loading="lazy"
+           onclick="openLightbox(3)"
            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
       <div class="gallery-img-placeholder" style="display:none">📷</div>
     </div>
     <div>
       <img src="photo5.jpg" alt="" class="gallery-img" loading="lazy"
+           onclick="openLightbox(4)"
            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
       <div class="gallery-img-placeholder" style="display:none">📷</div>
     </div>
@@ -1000,6 +1192,38 @@ section.show { opacity: 1; transform: translateY(0); }
     <button class="ghost-btn" onclick="openModal('groomGiftModal')">신랑측</button>
     <button class="ghost-btn" onclick="openModal('brideGiftModal')">신부측</button>
   </div>
+</section>
+
+<!-- ──── 방명록 ──── -->
+<section id="guestbook-section">
+  <div class="section-label">Guestbook</div>
+  <div class="section-title korean-title">축하 메시지</div>
+  <div class="divider"><span class="divider-icon">✦</span></div>
+  <div class="guestbook-form">
+    <div class="gb-input-wrap">
+      <label>이름</label>
+      <input type="text" class="gb-input" id="gbName" placeholder="홍길동" maxlength="10">
+    </div>
+    <div class="gb-input-wrap">
+      <label>메시지</label>
+      <textarea class="gb-textarea" id="gbMsg" placeholder="두 분의 결혼을 진심으로 축하드립니다 🎉" maxlength="150"></textarea>
+    </div>
+    <button class="gb-submit" onclick="submitGuestbook()">메시지 남기기</button>
+  </div>
+  <div class="gb-list" id="gbList"></div>
+</section>
+
+<!-- ──── 카카오 공유 ──── -->
+<section id="share-section">
+  <div class="section-label">Share</div>
+  <div class="section-title korean-title">공유하기</div>
+  <div class="divider"><span class="divider-icon">✦</span></div>
+  <button class="share-btn" onclick="shareKakao()">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 3C6.48 3 2 6.48 2 10.8c0 2.7 1.56 5.1 3.9 6.6l-.9 3.3 3.9-2.1c.96.18 1.98.3 3.1.3 5.52 0 10-3.48 10-7.8S17.52 3 12 3z"/>
+    </svg>
+    카카오톡으로 청첩장 공유
+  </button>
 </section>
 
 <!-- ──── 감사합니다 ──── -->
@@ -1090,6 +1314,27 @@ section.show { opacity: 1; transform: translateY(0); }
 
 <!-- 토스트 -->
 <div id="toast">계좌번호가 복사되었습니다</div>
+
+<!-- BGM -->
+<audio id="bgmAudio" loop>
+  <source src="bgm.mp3" type="audio/mpeg">
+</audio>
+<button id="bgmBtn" onclick="toggleBGM()" title="배경음악">🎵</button>
+
+<!-- 라이트박스 -->
+<div id="lightbox" onclick="closeLightbox(event)">
+  <span id="lightboxClose" onclick="closeLightboxDirect()">✕</span>
+  <span id="lightboxPrev" onclick="lightboxNav(-1)">&#8249;</span>
+  <img id="lightboxImg" src="" alt="">
+  <span id="lightboxNext" onclick="lightboxNav(1)">&#8250;</span>
+  <div id="lightboxCounter"></div>
+</div>
+
+<!-- 카카오 SDK -->
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+  integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4"
+  crossorigin="anonymous"></script>
+<script>Kakao.init('d58ff0cee3a68c35e78f8ec7b58ad155');</script>
 
 <!-- 카카오맵 스크립트 -->
 <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
@@ -1233,11 +1478,172 @@ const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
       e.target.classList.add('show');
-      observer.unobserve(e.target); // 한 번 실행 후 감시 해제
+      observer.unobserve(e.target);
     }
   });
 }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 document.querySelectorAll('section').forEach(el => observer.observe(el));
+
+/* ─── BGM ─── */
+const bgmAudio = document.getElementById('bgmAudio');
+const bgmBtn   = document.getElementById('bgmBtn');
+let bgmPlaying = false;
+function toggleBGM() {
+  if (bgmPlaying) {
+    bgmAudio.pause();
+    bgmBtn.textContent = '🎵';
+    bgmBtn.classList.remove('playing');
+  } else {
+    bgmAudio.play().catch(() => {});
+    bgmBtn.textContent = '🎶';
+    bgmBtn.classList.add('playing');
+  }
+  bgmPlaying = !bgmPlaying;
+}
+
+/* ─── 라이트박스 ─── */
+const galleryImages = ['photo1.jpg','photo2.jpg','photo3.jpg','photo4.jpg','photo5.jpg'];
+let currentIdx = 0;
+function openLightbox(idx) {
+  currentIdx = idx;
+  const lb = document.getElementById('lightbox');
+  const img = document.getElementById('lightboxImg');
+  img.src = galleryImages[idx];
+  document.getElementById('lightboxCounter').textContent = (idx + 1) + ' / ' + galleryImages.length;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox(e) {
+  if (e.target === document.getElementById('lightbox')) closeLightboxDirect();
+}
+function closeLightboxDirect() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function lightboxNav(dir) {
+  currentIdx = (currentIdx + dir + galleryImages.length) % galleryImages.length;
+  openLightbox(currentIdx);
+}
+// 스와이프 지원
+let touchStartX = 0;
+document.getElementById('lightbox').addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+}, { passive: true });
+document.getElementById('lightbox').addEventListener('touchend', e => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) lightboxNav(diff > 0 ? 1 : -1);
+}, { passive: true });
+
+/* ─── 방명록 (Google Sheets 연동) ─── */
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzJY1G7ZGkUGujeI5nMrDQzgdto2gZbYS1vxdgTq-9_4u2BF4kgBoqsSL6UsAQr5fH6/exec';
+
+// 페이지 로드 시 기존 메시지 불러오기
+function loadGuestbook() {
+  const list = document.getElementById('gbList');
+  list.innerHTML = '<div style="text-align:center;color:var(--soft);font-size:13px;padding:20px">불러오는 중...</div>';
+  fetch(SHEET_URL)
+    .then(r => r.json())
+    .then(data => {
+      if (!data.length) {
+        list.innerHTML = '<div style="text-align:center;color:var(--soft);font-size:13px;padding:20px">첫 번째 메시지를 남겨주세요 💌</div>';
+        return;
+      }
+      list.innerHTML = data.map(m => `
+        <div class="gb-item">
+          <div class="gb-item-name">✦ ${m.name}</div>
+          <div class="gb-item-msg">${m.msg}</div>
+          <div class="gb-item-date">${m.date}</div>
+        </div>
+      `).join('');
+    })
+    .catch(() => {
+      list.innerHTML = '<div style="text-align:center;color:var(--soft);font-size:13px;padding:20px">메시지를 불러올 수 없습니다</div>';
+    });
+}
+loadGuestbook();
+
+function submitGuestbook() {
+  const name = document.getElementById('gbName').value.trim();
+  const msg  = document.getElementById('gbMsg').value.trim();
+  if (!name) { alert('이름을 입력해주세요.'); return; }
+  if (!msg)  { alert('메시지를 입력해주세요.'); return; }
+
+  const btn = document.querySelector('.gb-submit');
+  btn.textContent = '전송 중...';
+  btn.disabled = true;
+
+  const now = new Date();
+  const dateStr = now.getFullYear() + '.' +
+    String(now.getMonth()+1).padStart(2,'0') + '.' +
+    String(now.getDate()).padStart(2,'0');
+
+  fetch(SHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, msg, date: dateStr })
+  })
+  .then(() => {
+    document.getElementById('gbName').value = '';
+    document.getElementById('gbMsg').value = '';
+    btn.textContent = '메시지 남기기';
+    btn.disabled = false;
+    showGbToast();
+    setTimeout(loadGuestbook, 1000); // 1초 후 목록 갱신
+  })
+  .catch(() => {
+    alert('전송 중 오류가 발생했습니다. 다시 시도해주세요.');
+    btn.textContent = '메시지 남기기';
+    btn.disabled = false;
+  });
+}
+
+function showGbToast() {
+  const t = document.getElementById('toast');
+  t.textContent = '메시지가 등록되었습니다 💌';
+  t.classList.add('show');
+  setTimeout(() => {
+    t.classList.remove('show');
+    t.textContent = '계좌번호가 복사되었습니다';
+  }, 2000);
+}
+
+/* ─── 카카오 공유 ─── */
+function shareKakao() {
+  if (typeof Kakao === 'undefined' || !Kakao.isInitialized()) {
+    // SDK 로드 실패 시 기기 공유로 대체
+    if (navigator.share) {
+      navigator.share({ title: '정연제 ♥ 윤주영 결혼합니다', url: window.location.href });
+    } else {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        const t = document.getElementById('toast');
+        t.textContent = '링크가 복사되었습니다';
+        t.classList.add('show');
+        setTimeout(() => { t.classList.remove('show'); t.textContent = '계좌번호가 복사되었습니다'; }, 2000);
+      });
+    }
+    return;
+  }
+  Kakao.Share.sendDefault({
+    objectType: 'feed',
+    content: {
+      title: '정연제 ♥ 윤주영 결혼합니다 💍',
+      description: '2027년 3월 13일 토요일 낮 12시\nJW 메리어트 서울 5F 그랜드볼룸',
+      imageUrl: 'https://1822yjy-commits.github.io/demo-wedding/my%20wedding/photo1.jpg',
+      link: {
+        mobileWebUrl: 'https://1822yjy-commits.github.io/demo-wedding/my%20wedding/',
+        webUrl: 'https://1822yjy-commits.github.io/demo-wedding/my%20wedding/'
+      }
+    },
+    buttons: [{
+      title: '청첩장 보기',
+      link: {
+        mobileWebUrl: 'https://1822yjy-commits.github.io/demo-wedding/my%20wedding/',
+        webUrl: 'https://1822yjy-commits.github.io/demo-wedding/my%20wedding/'
+      }
+    }]
+  });
+}
 </script>
 
 </body>
