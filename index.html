@@ -5,7 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>정연제 ♥ 윤주영 결혼합니다</title>
 <meta property="og:title" content="정연제 ♥ 윤주영 결혼합니다">
-<meta property="og:description" content="2027년 3월 13일 토요일">
+<meta property="og:description" content="2027년 3월 13일 토요일 낮 12시 · JW 메리어트 서울">
+<meta property="og:image" content="https://1822yjy-commits.github.io/demo-wedding/my%20wedding/photo1.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://1822yjy-commits.github.io/demo-wedding/my%20wedding/">
+<meta property="og:type" content="website">
 <!-- 폰트 연결 최적화 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -81,14 +86,19 @@ body {
 /* ─── 인트로 영상 ─── */
 #intro {
   position: relative;
-  width: 100%; height: 100svh;
+  width: 100%;
+  height: 100vh; /* svh 대신 vh - 모바일 주소창 버그 방지 */
+  height: 100svh;
   overflow: hidden;
   background: var(--dark);
+  transform: translateZ(0); /* GPU 레이어 분리 */
 }
 #introVideo {
   width: 100%; height: 100%;
   object-fit: cover;
   opacity: 0.85;
+  transform: translateZ(0); /* GPU 가속 */
+  will-change: transform; /* 브라우저에 미리 알림 */
 }
 .intro-overlay {
   position: absolute; inset: 0;
@@ -176,8 +186,13 @@ section {
   opacity: 0;
   transform: translateY(40px);
   transition: opacity 0.9s ease, transform 0.9s ease;
+  will-change: opacity, transform; /* GPU 가속 */
 }
-section.show { opacity: 1; transform: translateY(0); }
+section.show {
+  opacity: 1;
+  transform: translateY(0);
+  will-change: auto; /* 애니메이션 끝나면 해제 */
+}
 
 .section-label {
   font-family: 'Gowun Batang', 'Cormorant Garamond', serif;
@@ -1375,12 +1390,23 @@ window.addEventListener('scroll', () => {
   }
 }, { passive: true });
 
-/* ─── 영상 끝나면 자동 스크롤 ─── */
+/* ─── 영상 최적화 - 화면 벗어나면 일시정지 ─── */
 const video = document.getElementById('introVideo');
 if (video) {
-  video.addEventListener('ended', () => {
-    scrollToInvite();
-  });
+  // 영상 끝나면 자동 스크롤
+  video.addEventListener('ended', () => scrollToInvite());
+
+  // 화면 밖으로 나가면 일시정지 → 모바일 버벅임 핵심 해결
+  const videoObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        video.play().catch(() => {});
+      } else {
+        video.pause(); // 화면 밖이면 재생 중단
+      }
+    });
+  }, { threshold: 0.1 });
+  videoObserver.observe(video);
 }
 function scrollToInvite() {
   document.getElementById('invite').scrollIntoView({ behavior: 'smooth' });
