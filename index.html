@@ -1610,39 +1610,32 @@ function showGbToast() {
 
 /* ─── 카카오 공유 ─── */
 function shareKakao() {
-  if (typeof Kakao === 'undefined' || !Kakao.isInitialized()) {
-    // SDK 로드 실패 시 기기 공유로 대체
-    if (navigator.share) {
-      navigator.share({ title: '정연제 ♥ 윤주영 결혼합니다', url: window.location.href });
-    } else {
-      navigator.clipboard.writeText(window.location.href).then(() => {
-        const t = document.getElementById('toast');
-        t.textContent = '링크가 복사되었습니다';
-        t.classList.add('show');
-        setTimeout(() => { t.classList.remove('show'); t.textContent = '계좌번호가 복사되었습니다'; }, 2000);
-      });
-    }
-    return;
-  }
-  Kakao.Share.sendDefault({
-    objectType: 'feed',
-    content: {
+  const url = encodeURIComponent('https://1822yjy-commits.github.io/demo-wedding/my%20wedding/');
+  const text = encodeURIComponent('정연제 ♥ 윤주영 결혼합니다\n2027년 3월 13일 토요일 낮 12시\nJW 메리어트 서울 5F 그랜드볼룸');
+
+  // 모바일 카카오톡 앱으로 바로 공유
+  const kakaoScheme = `kakaolink://send?msg=${text}&url=${url}`;
+
+  // 모바일이면 카카오 앱, 아니면 링크 복사
+  const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+  if (isMobile && navigator.share) {
+    navigator.share({
       title: '정연제 ♥ 윤주영 결혼합니다 💍',
-      description: '2027년 3월 13일 토요일 낮 12시\nJW 메리어트 서울 5F 그랜드볼룸',
-      imageUrl: 'https://1822yjy-commits.github.io/demo-wedding/my%20wedding/photo1.jpg',
-      link: {
-        mobileWebUrl: 'https://1822yjy-commits.github.io/demo-wedding/my%20wedding/',
-        webUrl: 'https://1822yjy-commits.github.io/demo-wedding/my%20wedding/'
-      }
-    },
-    buttons: [{
-      title: '청첩장 보기',
-      link: {
-        mobileWebUrl: 'https://1822yjy-commits.github.io/demo-wedding/my%20wedding/',
-        webUrl: 'https://1822yjy-commits.github.io/demo-wedding/my%20wedding/'
-      }
-    }]
-  });
+      text: '2027년 3월 13일 토요일 낮 12시\nJW 메리어트 서울 5F 그랜드볼룸',
+      url: 'https://1822yjy-commits.github.io/demo-wedding/my%20wedding/'
+    });
+  } else {
+    navigator.clipboard.writeText('https://1822yjy-commits.github.io/demo-wedding/my%20wedding/')
+      .then(() => {
+        const t = document.getElementById('toast');
+        t.textContent = '링크가 복사되었습니다 📋';
+        t.classList.add('show');
+        setTimeout(() => {
+          t.classList.remove('show');
+          t.textContent = '계좌번호가 복사되었습니다';
+        }, 2500);
+      });
+  }
 }
 </script>
 
