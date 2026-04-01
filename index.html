@@ -87,23 +87,36 @@ body {
 #intro {
   position: relative;
   width: 100%;
-  height: 100vh; /* svh 대신 vh - 모바일 주소창 버그 방지 */
+  height: 100vh;
   height: 100svh;
   overflow: hidden;
   background: var(--dark);
-  transform: translateZ(0); /* GPU 레이어 분리 */
+  transform: translateZ(0);
 }
 #introVideo {
   width: 100%; height: 100%;
   object-fit: cover;
   opacity: 0.85;
   transform: translateZ(0);
+  pointer-events: none; /* 영상이 터치 이벤트 가로채지 않도록 */
 }
 .intro-overlay {
   position: absolute; inset: 0;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   background: linear-gradient(to bottom, rgba(42,36,32,0.2) 0%, rgba(42,36,32,0.45) 100%);
+  touch-action: pan-y; /* 세로 스크롤만 허용, 가로 스와이프 차단 */
+  pointer-events: none; /* 오버레이가 터치 막지 않도록 */
+}
+.intro-scroll {
+  pointer-events: auto;
+  position: absolute; bottom: 36px;
+  left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column;
+  align-items: center; gap: 8px;
+  opacity: 0;
+  animation: fadeUp 1s ease forwards 3.7s;
+  cursor: pointer;
 }
 .intro-line {
   width: 1px; height: 0;
@@ -112,7 +125,6 @@ body {
   animation: lineGrow 1.2s ease forwards 0.5s;
 }
 @keyframes lineGrow { to { height: 60px; } }
-
 .intro-script-wrap {
   font-family: 'Great Vibes', cursive;
   font-size: clamp(36px, 10vw, 58px);
@@ -131,10 +143,7 @@ body {
   animation: hwWrite 0.25s cubic-bezier(0.22, 1, 0.36, 1) forwards var(--d);
   transform-origin: bottom left;
 }
-.hw-space {
-  display: inline-block;
-  width: 0.28em;
-}
+.hw-space { display: inline-block; width: 0.28em; }
 @keyframes hwWrite {
   0%   { opacity: 0; transform: translateY(10px) rotate(-4deg) scaleX(0.7); }
   60%  { opacity: 1; transform: translateY(-2px) rotate(1deg) scaleX(1.05); }
@@ -148,15 +157,6 @@ body {
   margin-top: 14px;
   opacity: 0;
   animation: fadeUp 1s ease forwards 3.1s;
-}
-.intro-scroll {
-  position: absolute; bottom: 36px;
-  left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column;
-  align-items: center; gap: 8px;
-  opacity: 0;
-  animation: fadeUp 1s ease forwards 3.7s;
-  cursor: pointer;
 }
 .intro-scroll span {
   font-size: 10px; letter-spacing: 3px;
@@ -1389,24 +1389,34 @@ window.addEventListener('scroll', () => {
 
 /* ─── 영상 최적화 - 화면 벗어나면 일시정지 ─── */
 const video = document.getElementById('introVideo');
+let autoScrolling = false; // 자동스크롤 중 플래그
+
 if (video) {
   // 영상 끝나면 자동 스크롤
-  video.addEventListener('ended', () => scrollToInvite());
+  video.addEventListener('ended', () => {
+    autoScrolling = true;
+    scrollToInvite();
+    // 스크롤 완료 후 플래그 해제
+    setTimeout(() => { autoScrolling = false; }, 1000);
+  });
 
-  // 화면 밖으로 나가면 일시정지 → 모바일 버벅임 핵심 해결
+  // 화면 밖으로 나가면 일시정지
   const videoObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         video.play().catch(() => {});
       } else {
-        video.pause(); // 화면 밖이면 재생 중단
+        video.pause();
       }
     });
-  }, { threshold: 0.1 });
+  }, { threshold: 0.05 }); // threshold 낮춰서 더 빨리 감지
   videoObserver.observe(video);
 }
+
 function scrollToInvite() {
-  document.getElementById('invite').scrollIntoView({ behavior: 'smooth' });
+  const invite = document.getElementById('invite');
+  // smooth 대신 즉시 이동 - 모바일 터치 충돌 방지
+  invite.scrollIntoView({ behavior: 'auto' });
 }
 
 /* ─── 카운트다운 ─── */
